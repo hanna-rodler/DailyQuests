@@ -34,6 +34,25 @@ function onTaskDrop(transferData: TRANSFER_DATA) {
     kanbanStore.moveTask(transferData.taskId, props.columnId!, props.task.taskId)
   }
 }
+
+function formatDate(dateString: string) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+  const date = new Date(dateString)
+  return date.toLocaleDateString(undefined, options).replace(/\//g, '.')
+}
+
+function isDueTodayOrTomorrow(dateString: string) {
+  const today = new Date()
+  const tomorrow = new Date()
+  tomorrow.setDate(today.getDate() + 1)
+
+  const dueDate = new Date(dateString)
+
+  return (
+    dueDate.toDateString() === today.toDateString() ||
+    dueDate.toDateString() === tomorrow.toDateString()
+  )
+}
 </script>
 
 <template>
@@ -56,6 +75,14 @@ function onTaskDrop(transferData: TRANSFER_DATA) {
         <div></div>
       </div>
       <p class="w-full mt-1 text-sm text-gray-400">{{ task.description }}</p>
+      <div>
+        <div class="rounded-full bg-teal-700 text-white pl-3 py-0.5 mt-3 w-3/4">
+          {{ task.status }}
+        </div>
+      </div>
+      <div class="mt-2">
+        {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span>
+      </div>
     </Draggable>
   </DropZone>
 
