@@ -71,24 +71,6 @@ export function updateTask(columnId: Column['columnId'], task: Task) {
       }
     }
 
-    if (column.columnId !== task.doDate) {
-      console.log('move task')
-      deleteTask(column.columnId, oldTask.taskId)
-    }
-    if (column.columnId !== oldTask.doDate) {
-      console.log('move old task')
-      deleteTask(column.columnId, oldTask.taskId)
-    }
-    // if (isMoveTask) {
-    //   console.log('should move task', task.taskId, 'to column', task.doDate)
-    //   // addTaskToColumn(task.doDate, task)
-    //   moveTask(task.taskId, task.doDate)
-    //   return {
-    //     ...oldTask,
-    //     ...task
-    //   }
-    // addTaskToColumn(task.doDate, task)
-
     return oldTask
   })
 }
