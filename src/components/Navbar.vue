@@ -10,7 +10,7 @@ const isColumnModalActive = ref(false)
 
 <template>
   <div class="flex justify-between px-2 mb-3 text-white">
-    <h1 class="font-bold text-3xl">Kanban Board</h1>
+    <h1 class="font-bold text-3xl">💎 Daily Quests</h1>
     <button class="font-bold" @click="isColumnModalActive = !isColumnModalActive">
       Add Column
     </button>

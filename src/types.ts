@@ -23,3 +23,5 @@ export type TRANSFER_DATA = {
   columnId?: Column['columnId']
   taskId?: Task['taskId']
 }
+
+export type DateStringArray = Date[]

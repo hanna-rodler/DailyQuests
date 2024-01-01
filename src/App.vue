@@ -2,6 +2,11 @@
 import Column from './components/Column.vue'
 import Navbar from './components/Navbar.vue'
 import { STORE } from './stores/kanbanStore'
+
+import { createCalendarColumns } from './utils/CalendarDates'
+
+// Example usage:
+createCalendarColumns()
 </script>
 
 <template>
