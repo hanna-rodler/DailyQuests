@@ -39,7 +39,7 @@ function onTaskDrop(transferData: TRANSFER_DATA) {
 <template>
   <DropZone @drop-data="onTaskDrop">
     <Draggable
-      class="shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
+      class="cursor-pointer shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
       :transfer-data="{
         taskId: task.taskId,
         type: TYPES.TASK

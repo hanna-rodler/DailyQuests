@@ -5,12 +5,17 @@ const KEY = 'KANBAN-STORE'
 
 export const STORE = useLocalStorage<Column[]>(KEY, [])
 
-export function addColumn(name: Column['name']) {
-  STORE.value.push({
-    columnId: uuidv4(),
-    name,
-    tasks: []
-  })
+export function addColumn(name: Column['name'], columnDateId: string) {
+  // Check if columnId already exists
+  const columnExists = STORE.value.some((column) => column.columnId === columnDateId)
+
+  if (!columnExists) {
+    STORE.value.push({
+      columnId: columnDateId,
+      name,
+      tasks: []
+    })
+  }
 }
 
 export function updateColumn(payload: Pick<Column, 'name' | 'columnId'>) {
@@ -36,7 +41,10 @@ export function addTaskToColumn(
   column.tasks.push({
     taskId: uuidv4(),
     name: payload.name,
-    description: payload.description
+    description: payload.description,
+    dueDate: payload.dueDate,
+    doDate: payload.doDate,
+    status: payload.status
   })
 }
 
