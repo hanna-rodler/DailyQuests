@@ -1,5 +1,6 @@
 import kanbanStore from '@/stores/kanbanStore'
 import type { DateStringArray } from '@/types'
+import { generateDateStringIdFromDate } from '@/utils/utils'
 
 export function getCalendarForCurrentWeek(): DateStringArray {
   const today = new Date()
@@ -33,13 +34,8 @@ export function getCalendarForCurrentMonth(): void {
 
 export function createCalendarColumns() {
   const currWeekDates = getCalendarForCurrentWeek()
-  console.log('currentWeekDates:', currWeekDates)
 
   for (const date of currWeekDates) {
     kanbanStore.addColumn(date.toDateString(), generateDateStringIdFromDate(date))
   }
-}
-
-function generateDateStringIdFromDate(date: Date): string {
-  return date.toISOString().split('T')[0]
 }

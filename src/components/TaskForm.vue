@@ -12,10 +12,12 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<{
-  columnId: Column['columnId']
+  columnId?: Column['columnId']
   task?: Task
   action: ACTIONS
 }>()
+
+console.log('columnId', props.columnId)
 
 const taskForm = ref()
 let validationSchema = toTypedSchema(taskFormSchema)
@@ -31,15 +33,20 @@ onMounted(() => {
 })
 
 function onSubmit(values: any) {
-  if (props.action === ACTIONS.ADD_TASK) {
-    kanbanStore.addTaskToColumn(props.columnId, {
+  let columnId = props.columnId
+  if (columnId === undefined) {
+    columnId = values.doDate
+  }
+  console.log('columnId', columnId)
+  if (props.action === ACTIONS.ADD_TASK && columnId !== undefined) {
+    kanbanStore.addTaskToColumn(columnId, {
       name: values.name,
       description: values.description,
       dueDate: values.dueDate,
       doDate: values.doDate,
       status: values.status
     })
-  } else if (props.action === ACTIONS.UPDATE_TASK && props.task) {
+  } else if (props.action === ACTIONS.UPDATE_TASK && props.task && columnId !== undefined) {
     let updatedTask = {
       taskId: props.task.taskId,
       name: values.name,
@@ -49,12 +56,20 @@ function onSubmit(values: any) {
       status: values.status
     }
 
-    kanbanStore.updateTask(props.columnId, updatedTask)
+    kanbanStore.updateTask(columnId, updatedTask)
+    // move Task if the doDate and the columnId (Date) are not the same anymore
+    if (columnId !== updatedTask.doDate) {
+      kanbanStore.moveTask(updatedTask.taskId, updatedTask.doDate)
+    }
   }
   emit('close-modal')
 }
 </script>
 
+<!--TODO: it is kind of unnecessary for the user to have to enter the do Date when they add the task e.g. to the column Monday, January 1st. Because the Column and the due date are always the same. It would only make sense for adding a future task.
+Solution A): only allow adding of tasks at one point, not per column. Then the doDate would need to be entered and the task would need to get added to the respective column automatically.
+Solution B): preset doDate or hide doDate for for form in columns. Could be difficult with form error handling though if the same form is used.
+Solution C): make a ColumnTaskForm and make a GeneralTaskForm. DoDate is present in GeneralTaskForm but not in ColumnTaskForm.-->
 <template>
   <Form
     ref="taskForm"

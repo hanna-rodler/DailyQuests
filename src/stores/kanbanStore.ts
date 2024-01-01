@@ -1,4 +1,5 @@
 import type { Column, Task } from '@/types'
+import { generateDateStringIdFromDate } from '@/utils/utils'
 import { useLocalStorage } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
 const KEY = 'KANBAN-STORE'
@@ -32,8 +33,14 @@ export function deleteColumn(columnId: Column['columnId']) {
 
 export function addTaskToColumn(
   columnId: Column['columnId'],
-  payload: Pick<Task, 'name' | 'description'>
+  payload: Pick<Task, 'name' | 'description' | 'dueDate' | 'doDate' | 'status'>
 ) {
+  // add task to correct column even if user clicks on "+" of a different column
+  const doDateStringId = generateDateStringIdFromDate(new Date(payload.doDate))
+  if (columnId !== doDateStringId) {
+    columnId = doDateStringId
+  }
+
   const column = STORE.value.find((column) => column.columnId === columnId)
 
   if (!column) return
@@ -54,12 +61,33 @@ export function updateTask(columnId: Column['columnId'], task: Task) {
   if (!column) return
 
   column.tasks = column.tasks.map((oldTask) => {
+    console.log('old Task', oldTask)
+    console.log('new Task', task)
+
     if (oldTask.taskId === task.taskId) {
       return {
         ...oldTask,
         ...task
       }
     }
+
+    if (column.columnId !== task.doDate) {
+      console.log('move task')
+      deleteTask(column.columnId, oldTask.taskId)
+    }
+    if (column.columnId !== oldTask.doDate) {
+      console.log('move old task')
+      deleteTask(column.columnId, oldTask.taskId)
+    }
+    // if (isMoveTask) {
+    //   console.log('should move task', task.taskId, 'to column', task.doDate)
+    //   // addTaskToColumn(task.doDate, task)
+    //   moveTask(task.taskId, task.doDate)
+    //   return {
+    //     ...oldTask,
+    //     ...task
+    //   }
+    // addTaskToColumn(task.doDate, task)
 
     return oldTask
   })
@@ -70,7 +98,9 @@ export function deleteTask(columnId: Column['columnId'], taskId: Task['taskId'])
 
   if (!column) return
 
+  console.log('delete Task', taskId, 'in column', column)
   column.tasks = column.tasks.filter((task) => task.taskId !== taskId)
+  console.log('column tasks', column.tasks)
 }
 
 export function moveTask(
@@ -81,11 +111,15 @@ export function moveTask(
   let currentTask!: Task
   let currentTaskIndex!: number
 
+  // TODO: warn user if task is being moved to a doDate after the dueDate.
+
   const column = STORE.value.find((column) =>
     column.tasks.find((task, index) => {
       if (task.taskId === taskId) {
         currentTask = task
         currentTaskIndex = index
+        currentTask.doDate = targetColumnId
+        updateTask(targetColumnId, currentTask)
         return true
       }
     })
