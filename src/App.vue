@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import Column from './components/Column.vue'
+import Navbar from './components/Navbar.vue'
+import { STORE } from './stores/kanbanStore'
+
+import { createCalendarColumns } from './utils/CalendarDates'
+
+createCalendarColumns()
+
+// Example usage:
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-
-      <!--<nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>-->
+  <div class="flex flex-col w-full h-full">
+    <Navbar />
+    <div class="flex-1 flex gap-4 px-3 overflow-x-auto">
+      <Column v-for="column of STORE" :key="column.columnId" :column="column" />
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style scoped>
+<style>
+#app {
+  @apply select-none h-screen bg-gray-500;
+}
 </style>

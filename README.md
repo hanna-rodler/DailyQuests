@@ -1,5 +1,6 @@
 # DailyQuests
 
+
 ## Project Setup
 
 ```sh
@@ -23,3 +24,5 @@ npm run build
 ```sh
 npm run lint
 ```
+
+Initial Kanban Board created with tutorial https://www.youtube.com/watch?v=Z5Bo4FIMSO4
