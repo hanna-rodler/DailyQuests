@@ -5,6 +5,7 @@ import { ErrorMessage, Field, Form } from 'vee-validate'
 
 import { taskFormSchema } from '@/schemas'
 import kanbanStore from '@/stores/kanbanStore'
+import doneTasksStore from '@/stores/doneTasksStore'
 import { ACTIONS, type Column, type Task } from '@/types'
 
 const emit = defineEmits<{
@@ -16,8 +17,6 @@ const props = defineProps<{
   task?: Task
   action: ACTIONS
 }>()
-
-console.log('columnId', props.columnId)
 
 const taskForm = ref()
 let validationSchema = toTypedSchema(taskFormSchema)
@@ -37,7 +36,6 @@ function onSubmit(values: any) {
   if (columnId === undefined) {
     columnId = values.doDate
   }
-  console.log('columnId', columnId)
   if (props.action === ACTIONS.ADD_TASK && columnId !== undefined) {
     kanbanStore.addTaskToColumn(columnId, {
       name: values.name,
@@ -60,6 +58,10 @@ function onSubmit(values: any) {
     // move Task if the doDate and the columnId (Date) are not the same anymore
     if (columnId !== updatedTask.doDate) {
       kanbanStore.moveTask(updatedTask.taskId, updatedTask.doDate)
+    }
+    if (updatedTask.status === 'Done') {
+      doneTasksStore.handleDoneTask(updatedTask)
+      kanbanStore.deleteTask(updatedTask.doDate, updatedTask.taskId)
     }
   }
   emit('close-modal')

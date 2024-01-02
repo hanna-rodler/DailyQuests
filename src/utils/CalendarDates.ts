@@ -34,7 +34,7 @@ export function getCalendarForCurrentMonth(): void {
 
 export function createCalendarColumns() {
   const currWeekDates = getCalendarForCurrentWeek()
-  kanbanStore.getAllPastColumns()
+  kanbanStore.handlePastColumnsAndTasks()
 
   for (const date of currWeekDates) {
     kanbanStore.addColumn(date.toDateString(), generateDateStringIdFromDate(date))
