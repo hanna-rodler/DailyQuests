@@ -6,7 +6,7 @@ export function getCalendarForCurrentWeek(): DateStringArray {
   const today = new Date()
   const currentDay = today.getDay()
   const startDate = new Date(today)
-  startDate.setDate(today.getDate() - currentDay) // Set to the first day of the week (Sunday)
+  //   startDate.setDate(today.getDate() - currentDay) // Set to the first day of the week (Sunday)
 
   const currWeekDates: DateStringArray = []
   for (let i = 0; i < 7; i++) {
@@ -34,6 +34,7 @@ export function getCalendarForCurrentMonth(): void {
 
 export function createCalendarColumns() {
   const currWeekDates = getCalendarForCurrentWeek()
+  kanbanStore.getAllPastColumns()
 
   for (const date of currWeekDates) {
     kanbanStore.addColumn(date.toDateString(), generateDateStringIdFromDate(date))

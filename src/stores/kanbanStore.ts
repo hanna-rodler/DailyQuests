@@ -1,10 +1,23 @@
 import type { Column, Task } from '@/types'
-import { generateDateStringIdFromDate } from '@/utils/utils'
+import { generateDateStringIdFromDate, compareDateOnly } from '@/utils/utils'
 import { useLocalStorage } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
 const KEY = 'KANBAN-STORE'
 
 export const STORE = useLocalStorage<Column[]>(KEY, [])
+
+export function handlePastColumnsAndTasks() {
+  for (const column of STORE.value) {
+    if (compareDateOnly(new Date(column.columnId), new Date(), false)) {
+      for (const columnTask of column.tasks) {
+        const currentDayColumnId = generateDateStringIdFromDate(new Date())
+
+        moveTask(columnTask.taskId, currentDayColumnId)
+      }
+      deleteColumn(column.columnId)
+    }
+  }
+}
 
 export function addColumn(name: Column['name'], columnDateId: string) {
   // Check if columnId already exists
@@ -147,6 +160,7 @@ export function moveColumn(columnId: Column['columnId'], targetColumnId: Column[
 export default {
   STORE,
   addColumn,
+  handlePastColumnsAndTasks,
   updateColumn,
   deleteColumn,
   addTaskToColumn,

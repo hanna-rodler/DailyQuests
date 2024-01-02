@@ -53,6 +53,13 @@ function isDueTodayOrTomorrow(dateString: string) {
     dueDate.toDateString() === tomorrow.toDateString()
   )
 }
+
+function isPastDate(dateString: string) {
+  const today = new Date()
+  const dueDate = new Date(dateString)
+
+  return dueDate < today
+}
 </script>
 
 <template>
@@ -76,12 +83,14 @@ function isDueTodayOrTomorrow(dateString: string) {
       </div>
       <p class="w-full mt-1 text-sm text-gray-400">{{ task.description }}</p>
       <div>
+        <!--TODO: would be nice if the differnt task stati would have different background colors -->
         <div class="rounded-full bg-teal-700 text-white pl-3 py-0.5 mt-3 w-3/4">
           {{ task.status }}
         </div>
       </div>
-      <div class="mt-2">
-        {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span>
+      <div class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
+        {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
+        ><span v-if="isPastDate(task.dueDate)">🔥</span>
       </div>
     </Draggable>
   </DropZone>
@@ -101,7 +110,7 @@ function isDueTodayOrTomorrow(dateString: string) {
 
   <Modal
     :is-modal-active="isDeleteTaskModalActive"
-    :heading="`${ACTIONS.DELETE_COLUMN.split('_').join(' ')}`"
+    :heading="`${ACTIONS.DELETE_TASK.split('_').join(' ')}`"
     @close-modal="toggleDeleteTaskModal"
   >
     <div class="p-2">
