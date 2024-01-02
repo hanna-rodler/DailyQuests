@@ -5,8 +5,9 @@ import { STORE } from './stores/kanbanStore'
 
 import { createCalendarColumns } from './utils/CalendarDates'
 
-// Example usage:
 createCalendarColumns()
+
+// Example usage:
 </script>
 
 <template>

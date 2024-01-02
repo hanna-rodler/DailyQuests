@@ -11,7 +11,6 @@ export enum TYPES {
 
 export enum ACTIONS {
   ADD_COLUMN = 'ADD_COLUMN',
-  UPDATE_COLUMN = 'UPDATE_COLUMN',
   DELETE_COLUMN = 'DELETE_COLUMN',
   ADD_TASK = 'ADD_TASK',
   UPDATE_TASK = 'UPDATE_TASK',
@@ -24,4 +23,15 @@ export type TRANSFER_DATA = {
   taskId?: Task['taskId']
 }
 
+export type DoneTasks = {
+  taskId: string
+  task: Task
+}
+
 export type DateStringArray = Date[]
+
+export type DateFormatOptions = {
+  year: 'numeric'
+  month: 'numeric' | '2-digit'
+  day: 'numeric' | '2-digit'
+}

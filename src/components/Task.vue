@@ -1,6 +1,13 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { TYPES, type Column, type Task, ACTIONS, type TRANSFER_DATA } from '@/types'
+import {
+  TYPES,
+  type Column,
+  type Task,
+  ACTIONS,
+  type TRANSFER_DATA,
+  type DateFormatOptions
+} from '@/types'
 import Modal from './common/KanbanModal.vue'
 import TaskForm from './TaskForm.vue'
 import { ref } from 'vue'
@@ -36,7 +43,7 @@ function onTaskDrop(transferData: TRANSFER_DATA) {
 }
 
 function formatDate(dateString: string) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+  const options: DateFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' }
   const date = new Date(dateString)
   return date.toLocaleDateString(undefined, options).replace(/\//g, '.')
 }
