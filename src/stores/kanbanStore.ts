@@ -2,7 +2,6 @@ import type { Column, Task } from '@/types'
 import { generateDateStringIdFromDate, compareDateOnly } from '@/utils/utils'
 import { useLocalStorage } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
-import { handleDoneTask } from '@/stores/doneTasksStore'
 const KEY = 'KANBAN-STORE'
 
 export const STORE = useLocalStorage<Column[]>(KEY, [])
@@ -87,14 +86,11 @@ export function updateTask(columnId: Column['columnId'], task: Task) {
 }
 
 export function deleteTask(columnId: Column['columnId'], taskId: Task['taskId']) {
-  console.log('columnId', columnId)
   const column = STORE.value.find((column) => column.columnId === columnId)
-  console.log('delete Task', taskId, 'in column', column)
 
   if (!column) return
 
   column.tasks = column.tasks.filter((task) => task.taskId !== taskId)
-  console.log('column tasks', column.tasks)
 }
 
 export function moveTask(
