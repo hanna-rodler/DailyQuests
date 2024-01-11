@@ -1,8 +1,30 @@
+import { reactive, toRefs } from 'vue';
+import axios from 'axios';
 import type { Column, Task } from '@/types'
 import { generateDateStringIdFromDate, compareDateOnly } from '@/utils/utils'
 import { useLocalStorage } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
 const KEY = 'KANBAN-STORE'
+
+// Extending the existing state to include public holidays
+const state = reactive({
+  // ... existing state properties
+  publicHolidays: []
+});
+
+// Function to fetch public holidays
+async function fetchPublicHolidays(countryCode, year) {
+  try {
+      const response = await axios.get(`https://date.nager.at/Api/v2/PublicHolidays/${year}/${countryCode}`);
+      state.publicHolidays = response.data.map(holiday => ({
+          date: holiday.date,
+          name: holiday.localName
+      }));
+  } catch (error) {
+      console.error('Error fetching public holidays:', error);
+      // Handle errors appropriately
+  }
+}
 
 export const STORE = useLocalStorage<Column[]>(KEY, [])
 
@@ -163,4 +185,9 @@ export default {
   deleteTask,
   moveTask,
   moveColumn
+
 }
+export {
+  state,
+  fetchPublicHolidays
+};

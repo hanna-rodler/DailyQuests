@@ -1,78 +1,111 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ACTIONS, TYPES, type Column, type TRANSFER_DATA } from '@/types'
-import Draggable from './common/KanbanDraggable.vue'
-import DropZone from './common/KanbanDropZone.vue'
-import { ref } from 'vue'
-import TaskForm from './TaskForm.vue'
-import Modal from './common/KanbanModal.vue'
-import kanbanStore from '@/stores/kanbanStore'
-import Task from './Task.vue'
+import { ref, computed } from 'vue';
+import { ACTIONS, TYPES, type Column, type TRANSFER_DATA } from '@/types';
+import Draggable from './common/KanbanDraggable.vue';
+import DropZone from './common/KanbanDropZone.vue';
+import TaskForm from './TaskForm.vue';
+import Modal from './common/KanbanModal.vue';
+import Task from './Task.vue';
+import kanbanStore, { state } from '@/stores/kanbanStore';
 
-const props = defineProps<{
-  column: Column
-}>()
+// Props definition
+const props = defineProps<{ column: Column }>();
 
-const selectedColumn = ref<Column | null>(null)
-let selectedColumnId = ref('')
-const isTaskModalActive = ref(false)
+// Local state
+const selectedColumnId = ref('');
+const isTaskModalActive = ref(false);
 
+// Computed property for public holidays
+const publicHolidays = computed(() => {
+  const columnDate = props.column.columnId; // Assuming columnId represents the date
+  return state.publicHolidays.filter(holiday => holiday.date === columnDate);
+});
+
+// Event handlers
 function onDrop(transferData: TRANSFER_DATA) {
   if (transferData.type === TYPES.COLUMN && transferData.columnId) {
-    kanbanStore.moveColumn(transferData.columnId, props.column.columnId)
+    kanbanStore.moveColumn(transferData.columnId, props.column.columnId);
   } else if (transferData.type === TYPES.TASK && transferData.taskId) {
-    kanbanStore.moveTask(transferData.taskId, props.column.columnId!)
+    kanbanStore.moveTask(transferData.taskId, props.column.columnId);
   }
 }
 
-// task handling
 function addTask(columnId: Column['columnId']) {
-  selectedColumnId.value = columnId
-  toggleTaskModal()
+  selectedColumnId.value = columnId;
+  toggleTaskModal();
 }
 
 function toggleTaskModal() {
-  isTaskModalActive.value = !isTaskModalActive.value
+  isTaskModalActive.value = !isTaskModalActive.value;
 }
 </script>
 
 <template>
   <DropZone @drop-data="onDrop">
-    <Draggable
-      :transfer-data="{
-        columnId: column.columnId,
-        type: TYPES.COLUMN
-      }"
-      class="p-2 w-64 bg-gray-100 shadow-lg shadow-slate-800 rounded"
-    >
-      <div class="flex justify-between items-center">
-        <div class="flex gap-2 items-center">
-          <span class="text-xl font-semibold overflow-x-auto w-40 py-1">
-            {{ column.name }}
-          </span>
-        </div>
-        <button class="text-2xl font-bold" @click="addTask(column.columnId)">➕</button>
+    <Draggable :transfer-data="{ columnId: column.columnId, type: TYPES.COLUMN }" class="column-wrapper">
+      <div class="column-header">
+        <span class="column-title">{{ column.name }}</span>
+        <button class="add-task-button" @click="addTask(column.columnId)">➕</button>
       </div>
-      <div class="flex flex-col gap-2 overflow-y-auto h-[35rem] p-2">
-        <Task
-          v-for="task of column.tasks"
-          :column-id="column.columnId"
-          :task="task"
-          :key="task.taskId"
-        />
+      <div class="holiday-container">
+        <div v-for="holiday in publicHolidays" :key="holiday.date" class="holiday-info">
+          {{ holiday.name }}
+        </div>
+      </div>
+      <div class="tasks-container">
+        <Task v-for="task in column.tasks" :column-id="column.columnId" :task="task" :key="task.taskId" />
       </div>
     </Draggable>
   </DropZone>
 
-  <Modal
-    :is-modal-active="isTaskModalActive"
-    :heading="`${ACTIONS.ADD_TASK.split('_').join(' ')}`"
-    @close-modal="toggleTaskModal()"
-  >
-    <TaskForm
-      :column-id="selectedColumnId"
-      :action="ACTIONS.ADD_TASK"
-      @close-modal="toggleTaskModal()"
-    />
+  <Modal :is-modal-active="isTaskModalActive" :heading="`${ACTIONS.ADD_TASK.split('_').join(' ')}`" @close-modal="toggleTaskModal">
+    <TaskForm :column-id="selectedColumnId" :action="ACTIONS.ADD_TASK" @close-modal="toggleTaskModal" />
   </Modal>
 </template>
+
+<style scoped>
+.column-wrapper {
+  padding: 2rem;
+  width: 16rem;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  overflow-x: auto;
+  max-width: 10rem;
+  padding: 0.5rem 1rem;
+}
+
+.holiday-container {
+  margin-top: 10px;
+}
+
+.holiday-info {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  max-height: 35rem;
+  padding: 1rem;
+}
+
+.add-task-button {
+  font-size: 2rem;
+  font-weight: bold;
+}
+</style>

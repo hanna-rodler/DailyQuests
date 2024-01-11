@@ -4,6 +4,15 @@ import Navbar from './components/Navbar.vue'
 import { STORE } from './stores/kanbanStore'
 
 import { createCalendarColumns } from './utils/CalendarDates'
+import { onMounted } from 'vue';
+import { fetchPublicHolidays } from './stores/kanbanStore'
+
+onMounted(() => {
+    const currentYear = new Date().getFullYear();
+    fetchPublicHolidays('US', currentYear); // Replace 'US' with the desired country code
+});
+
+
 
 createCalendarColumns()
 
