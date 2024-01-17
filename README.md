@@ -1,7 +1,3 @@
-Certainly! Below is a README.md file content for your project "DailyQuests" that includes sections for project setup, API fetching details, and testing instructions. You can use this content as a starting point and modify it to fit the specific details of your project.
-
----
-
 # DailyQuests
 
 DailyQuests is a Vue.js project focused on managing tasks and public holidays in a Kanban-style board. This project integrates with the Nager.Date public holiday API to fetch and display public holidays based on the selected year and country.
@@ -88,6 +84,3 @@ describe('Task.vue', () => {
 
 DailyQuests provides a user-friendly interface to manage tasks and view public holidays. The project is designed to be scalable and maintainable, with a focus on clean code and robust testing.
 
----
-
-To use this content, simply copy it and paste it into your project's `README.md` file. Modify it as necessary to include any additional project-specific information or instructions.
