@@ -83,4 +83,4 @@ describe('Task.vue', () => {
 ## Conclusion
 
 DailyQuests provides a user-friendly interface to manage tasks and view public holidays. The project is designed to be scalable and maintainable, with a focus on clean code and robust testing.
-
+## Initial Kanban Board created with tutorial https://www.youtube.com/watch?v=Z5Bo4FIMSO4
