@@ -1,6 +1,6 @@
-import { reactive, toRefs } from 'vue';
-import axios from 'axios';
-import type { Column, Task } from '@/types'
+import { reactive } from 'vue'
+import axios from 'axios'
+import type { Column, Holiday, Task } from '@/types'
 import { generateDateStringIdFromDate, compareDateOnly } from '@/utils/utils'
 import { useLocalStorage } from '@vueuse/core'
 import { v4 as uuidv4 } from 'uuid'
@@ -10,19 +10,22 @@ const KEY = 'KANBAN-STORE'
 const state = reactive({
   // ... existing state properties
   publicHolidays: []
-});
+})
 
 // Function to fetch public holidays
-async function fetchPublicHolidays(countryCode, year) {
+async function fetchPublicHolidays(countryCode: string, year: number) {
   try {
-      const response = await axios.get(`https://date.nager.at/Api/v2/PublicHolidays/${year}/${countryCode}`);
-      state.publicHolidays = response.data.map(holiday => ({
-          date: holiday.date,
-          name: holiday.localName
-      }));
+    const response = await axios.get(
+      `https://date.nager.at/Api/v2/PublicHolidays/${year}/${countryCode}`
+    )
+    state.publicHolidays = response.data.map((holiday: Holiday) => ({
+      date: holiday.date,
+      localName: holiday.localName
+    }))
+    console.log(state.publicHolidays)
   } catch (error) {
-      console.error('Error fetching public holidays:', error);
-      // Handle errors appropriately
+    console.error('Error fetching public holidays:', error)
+    // Handle errors appropriately
   }
 }
 
@@ -141,10 +144,10 @@ export function moveTask(
 
   column.tasks.splice(currentTaskIndex, 1)
 
-  let targetColumn = STORE.value.find((column) => column.columnId === targetColumnId)
+  const targetColumn = STORE.value.find((column) => column.columnId === targetColumnId)
 
   if (targetTaskId) {
-    let targetTaskIndex = targetColumn?.tasks.findIndex((task) => {
+    const targetTaskIndex = targetColumn?.tasks.findIndex((task) => {
       task.taskId === targetTaskId
     })
 
@@ -185,9 +188,5 @@ export default {
   deleteTask,
   moveTask,
   moveColumn
-
 }
-export {
-  state,
-  fetchPublicHolidays
-};
+export { state, fetchPublicHolidays }

@@ -35,3 +35,8 @@ export type DateFormatOptions = {
   month: 'numeric' | '2-digit'
   day: 'numeric' | '2-digit'
 }
+
+export type Holiday = {
+  date: string
+  localName: string
+}

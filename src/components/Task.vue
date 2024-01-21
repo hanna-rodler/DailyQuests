@@ -24,15 +24,15 @@ const props = defineProps<{
 const getStatusClass = computed(() => {
   switch (props.task.status) {
     case 'Not started':
-      return 'bg-red-500'; // Replace with your desired color
+      return 'bg-red-700' // Replace with your desired color
     case 'In Progress':
-      return 'bg-yellow-500'; // Replace with your desired color
+      return 'bg-amber-500' // Replace with your desired color
     case 'Review':
-      return 'bg-blue-500'; // Replace with your desired color
+      return 'bg-blue-600' // Replace with your desired color
     case 'Done':
-      return 'bg-green-500 funny-congratulation';
+      return 'bg-green-500 funny-congratulation'
     default:
-      return 'bg-gray-500'; // Default color
+      return 'bg-gray-500' // Default color
   }
 })
 const isTaskModalActive = ref(false)
@@ -94,27 +94,25 @@ function isPastDate(dateString: string) {
       }"
     >
       <div>
-        <div class="flex gap-2">
+        <div class="flex justify-between">
           <span class="font-bold"> {{ task.name }}</span>
-          <div class="flex gap-1">
-            <button class="text-sm font-bold" @click="toggleTaskModal()">&#9998;</button>
-            <button class="text-sm font-bold" @click="toggleDeleteTaskModal()">&#88;</button>
+          <div class="flex gap-3">
+            <button class="font-bold" @click="toggleTaskModal()">✏️</button>
+            <button class="font-bold text-red-600 text-sm" @click="toggleDeleteTaskModal()">
+              ❌
+            </button>
           </div>
         </div>
-        <div></div>
       </div>
-      <p class="w-full mt-1 text-sm text-gray-400">{{ task.description }}</p>
-      <div>
-        <!--TODO: would be nice if the differnt task stati would have different background colors -->
-        <div>
-          <div :class="[getStatusClass, 'rounded-full text-white pl-3 py-0.5 mt-3 w-3/4']">
-            {{ task.status }}
-          </div>
-      </div>
-      </div>
+      <p class="w-full mt-1 text-sm text-gray-700">{{ task.description }}</p>
       <div class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
-        {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
+        Due: {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
         ><span v-if="isPastDate(task.dueDate)">🔥</span>
+      </div>
+      <div class="mb-2">
+        <div :class="[getStatusClass, 'rounded-lg text-white py-0.5 mt-3 text-center']">
+          {{ task.status }}
+        </div>
       </div>
     </Draggable>
   </DropZone>
@@ -147,16 +145,20 @@ function isPastDate(dateString: string) {
   </Modal>
 </template>
 <style scoped>
-.bg-red-500 { background-color: red; }
-.bg-yellow-500 { background-color: yellow; }
-.bg-blue-500 { background-color: blue; }
-.bg-green-500 { background-color: green; }
-.bg-gray-500 { background-color: gray; }
-
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-30px); }
-  60% { transform: translateY(-15px); }
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
 }
 
 .funny-congratulation {
