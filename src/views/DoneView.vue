@@ -1,21 +1,33 @@
 <script setup lang="ts">
-import Column from '@/components/Column.vue'
 import Navbar from '@/components/Navbar.vue'
+import Task from '@/components/Task.vue'
 
-import { STORE } from '@/stores/kanbanStore'
+import { DONE_STORE, getSortedDoneTasks } from '@/stores/doneTasksStore'
 
 import { createCalendarColumns } from '@/utils/CalendarDates'
 
+getSortedDoneTasks('doDate')
+
 createCalendarColumns()
-const view = 'Done'
 </script>
 
 <template>
   <div class="flex flex-col w-full h-full">
-    <Navbar :view="`${view}`" />
-    <p>Test</p>
-    <!--<div class="flex-1 flex gap-4 px-3 overflow-x-auto">
-      <Column v-for="column of STORE" :key="column.columnId" :column="column" />
-    </div>-->
+    <Navbar />
+    <div class="flex justify-center">
+      <div class="max-w-7xl">
+        <div
+          class="mx-3 grid gap-4 grid-cols-1 sm:grid-cols-2 min-[700px]:grid-cols-3 lg:grid-cols-4"
+        >
+          <Task
+            v-for="task of DONE_STORE"
+            :key="task.taskId"
+            :task="task.task"
+            :column-id="`${task.task.doDate}`"
+            :is-done-task="true"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
