@@ -7,12 +7,11 @@ import { getCalendarForCurrentMonth } from '@/utils/CalendarDates'
 import { STORE } from '@/stores/kanbanStore'
 
 getCalendarForCurrentMonth()
-const view = 'Monthly'
 </script>
 
 <template>
   <div class="flex flex-col w-full h-full">
-    <Navbar :view="`${view}`" />
+    <Navbar />
     <div class="flex-1 flex gap-4 px-3 overflow-x-auto">
       <Column v-for="column of STORE" :key="column.columnId" :column="column" />
     </div>

@@ -18,6 +18,7 @@ import Draggable from './common/KanbanDraggable.vue'
 const props = defineProps<{
   task: Task
   columnId: Column['columnId']
+  isDoneTask: boolean
 }>()
 
 const isTaskModalActive = ref(false)
@@ -72,7 +73,8 @@ function isPastDate(dateString: string) {
 <template>
   <DropZone @drop-data="onTaskDrop">
     <Draggable
-      class="cursor-pointer shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
+      class="cursor-pointer bg-gray-100 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
+      :class="{ 'w-56': isDoneTask }"
       :transfer-data="{
         taskId: task.taskId,
         type: TYPES.TASK
@@ -89,13 +91,12 @@ function isPastDate(dateString: string) {
         <div></div>
       </div>
       <p class="w-full mt-1 text-sm text-gray-400">{{ task.description }}</p>
-      <div>
-        <!--TODO: would be nice if the differnt task stati would have different background colors -->
+      <div v-if="!isDoneTask">
         <div class="rounded-full bg-teal-700 text-white pl-3 py-0.5 mt-3 w-3/4">
           {{ task.status }}
         </div>
       </div>
-      <div class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
+      <div v-if="!isDoneTask" class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
         {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
         ><span v-if="isPastDate(task.dueDate)">🔥</span>
       </div>

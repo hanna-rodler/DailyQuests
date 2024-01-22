@@ -4,10 +4,10 @@ import MonthlyView from './views/MonthlyView.vue'
 import DoneView from './views/DoneView.vue'
 
 const routes = [
-  { path: '/', component: WeeklyView },
-  { path: '/weekly', component: WeeklyView },
-  { path: '/monthly', component: MonthlyView },
-  { path: '/done', component: DoneView }
+  { path: '/', props: { viewRoute: 'weekly' }, component: WeeklyView },
+  { path: '/weekly', props: { viewRoute: 'weekly' }, component: WeeklyView },
+  { path: '/monthly', props: { viewRoute: 'monthly' }, component: MonthlyView },
+  { path: '/done', props: { viewRoute: 'done' }, component: DoneView }
 ]
 
 export const router = createRouter({
