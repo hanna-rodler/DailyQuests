@@ -19,7 +19,6 @@ const isTaskModalActive = ref(false)
 // Computed property for public holidays
 const publicHolidays: ComputedRef<Holiday[]> = computed(() => {
   const columnDate = props.column.columnId // Assuming columnId represents the date
-  console.log(state.publicHolidays)
   return state.publicHolidays.filter((holiday: Holiday) => holiday.date === columnDate)
 })
 

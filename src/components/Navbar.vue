@@ -13,6 +13,9 @@ let viewRoute = route.path || '/weekly'
 if (viewRoute === '/') {
   viewRoute = '/weekly'
 }
+
+console.log(route)
+console.log(viewRoute)
 </script>
 
 <template>

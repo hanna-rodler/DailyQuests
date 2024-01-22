@@ -29,7 +29,6 @@ export function getCalendarForCurrentMonth(): void {
   // so for Jan 22: loop till Feb 22.
   for (let i = todayDate; i <= todayDate + lastDay.getDate(); i++) {
     const date = new Date(year, month, i)
-    console.log(date.toDateString())
     kanbanStore.addColumn(date.toDateString(), generateDateStringIdFromDate(date))
   }
 }

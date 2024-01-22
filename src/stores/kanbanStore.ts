@@ -22,7 +22,6 @@ async function fetchPublicHolidays(countryCode: string, year: number) {
       date: holiday.date,
       localName: holiday.localName
     }))
-    console.log(state.publicHolidays)
   } catch (error) {
     console.error('Error fetching public holidays:', error)
     // Handle errors appropriately
