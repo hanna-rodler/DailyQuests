@@ -64,6 +64,7 @@ function toggleTaskModal() {
           :column-id="column.columnId"
           :task="task"
           :key="task.taskId"
+          :is-done-task="false"
         />
       </div>
     </Draggable>

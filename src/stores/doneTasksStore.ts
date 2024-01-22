@@ -15,6 +15,18 @@ export function handleDoneTask(task: Task) {
   }
 }
 
+export function getSortedDoneTasks(type: string) {
+  if (type === 'dueDate') {
+    DONE_STORE.value.sort(
+      (a, b) => new Date(a.task.dueDate).getTime() - new Date(b.task.dueDate).getTime()
+    )
+  } else if (type === 'doDate') {
+    DONE_STORE.value.sort(
+      (a, b) => new Date(a.task.doDate).getTime() - new Date(b.task.doDate).getTime()
+    )
+  }
+}
+
 export default {
   DONE_STORE,
   handleDoneTask

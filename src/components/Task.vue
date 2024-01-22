@@ -19,6 +19,7 @@ import Draggable from './common/KanbanDraggable.vue'
 const props = defineProps<{
   task: Task
   columnId: Column['columnId']
+  isDoneTask: boolean
 }>()
 
 const getStatusClass = computed(() => {
@@ -87,7 +88,8 @@ function isPastDate(dateString: string) {
 <template>
   <DropZone @drop-data="onTaskDrop">
     <Draggable
-      class="cursor-pointer shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
+      class="cursor-pointer bg-gray-100 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded p-2"
+      :class="{ 'w-56': isDoneTask }"
       :transfer-data="{
         taskId: task.taskId,
         type: TYPES.TASK
@@ -105,14 +107,14 @@ function isPastDate(dateString: string) {
         </div>
       </div>
       <p class="w-full mt-1 text-sm text-gray-700">{{ task.description }}</p>
-      <div class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
-        Due: {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
-        ><span v-if="isPastDate(task.dueDate)">🔥</span>
-      </div>
-      <div class="mb-2">
+      <div v-if="!isDoneTask" class="mb-2">
         <div :class="[getStatusClass, 'rounded-lg text-white py-0.5 mt-3 text-center']">
           {{ task.status }}
         </div>
+      </div>
+      <div v-if="!isDoneTask" class="mt-2" :class="{ 'text-red-500': isPastDate(task.dueDate) }">
+        Due: {{ formatDate(task.dueDate) }} <span v-if="isDueTodayOrTomorrow(task.dueDate)">⏰</span
+        ><span v-if="isPastDate(task.dueDate)">🔥</span>
       </div>
     </Draggable>
   </DropZone>
