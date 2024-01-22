@@ -7,12 +7,12 @@ import { STORE } from '@/stores/kanbanStore'
 import { createCalendarColumns } from '@/utils/CalendarDates'
 
 createCalendarColumns()
+const view = 'Daily'
 </script>
 
 <template>
-  <h1>Weekly View</h1>
   <div class="flex flex-col w-full h-full">
-    <Navbar />
+    <Navbar :view="`${view}`" />
     <div class="flex-1 flex gap-4 px-3 overflow-x-auto">
       <Column v-for="column of STORE" :key="column.columnId" :column="column" />
     </div>
