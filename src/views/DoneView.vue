@@ -6,8 +6,6 @@ import { DONE_STORE, getSortedDoneTasks } from '@/stores/doneTasksStore'
 import { createCalendarColumns } from '@/utils/CalendarDates'
 
 getSortedDoneTasks('doDate')
-
-createCalendarColumns()
 </script>
 
 <template>

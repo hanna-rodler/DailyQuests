@@ -24,9 +24,7 @@ const publicHolidays: ComputedRef<Holiday[]> = computed(() => {
 
 // Event handlers
 function onDrop(transferData: TRANSFER_DATA) {
-  if (transferData.type === TYPES.COLUMN && transferData.columnId) {
-    kanbanStore.moveColumn(transferData.columnId, props.column.columnId)
-  } else if (transferData.type === TYPES.TASK && transferData.taskId) {
+  if (transferData.type === TYPES.TASK && transferData.taskId) {
     kanbanStore.moveTask(transferData.taskId, props.column.columnId)
   }
 }

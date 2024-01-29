@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Navbar from './components/Navbar.vue'
-import { STORE } from './stores/kanbanStore'
 
 import { onMounted } from 'vue'
 import { fetchPublicHolidays } from './stores/kanbanStore'

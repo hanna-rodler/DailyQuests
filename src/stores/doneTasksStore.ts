@@ -17,7 +17,6 @@ export function handleDoneTask(task: Task) {
 
 export function deleteTask(taskId: Task['taskId']) {
   const task = DONE_STORE.value.find((task) => task.taskId === taskId)
-  console.log(task)
 
   if (!task) return
 
@@ -42,7 +41,6 @@ export function updateTask(taskId: Task['taskId'], updatedTask: Task) {
   if (!task) return
 
   task.task = updatedTask
-  console.log(task.task, 'updated')
 }
 
 export default {

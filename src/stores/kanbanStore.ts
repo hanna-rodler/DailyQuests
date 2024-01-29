@@ -156,26 +156,6 @@ export function moveTask(
   }
 }
 
-export function moveColumn(columnId: Column['columnId'], targetColumnId: Column['columnId']) {
-  let columnToMove: Column
-  let targetColumnIndex: number
-
-  STORE.value = STORE.value.filter((column, index) => {
-    if (column.columnId === columnId) {
-      columnToMove = column
-      return false
-    }
-
-    if (column.columnId === targetColumnId) {
-      targetColumnIndex = index
-    }
-
-    return true
-  })
-
-  STORE.value.splice(targetColumnIndex!, 0, columnToMove!)
-}
-
 export default {
   STORE,
   addColumn,
@@ -185,7 +165,6 @@ export default {
   addTaskToColumn,
   updateTask,
   deleteTask,
-  moveTask,
-  moveColumn
+  moveTask
 }
 export { state, fetchPublicHolidays }

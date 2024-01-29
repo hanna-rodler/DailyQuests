@@ -68,7 +68,6 @@ function onSubmit(values: any) {
       kanbanStore.deleteTask(updatedTask.doDate, updatedTask.taskId)
     }
     if (origStatus === 'Done' && updatedTask.status !== 'Done') {
-      console.log('move back to other view')
       kanbanStore.addTaskToColumn(columnId, {
         name: values.name,
         description: values.description,
