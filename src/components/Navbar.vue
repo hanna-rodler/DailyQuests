@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import TaskForm from './TaskForm.vue'
 import Modal from './common/KanbanModal.vue'
 import { ACTIONS } from '@/types'
@@ -8,14 +8,15 @@ import { useRoute } from 'vue-router'
 
 const isTaskModalActive = ref(false)
 const route = useRoute()
-// Determine the view based on the route
-let viewRoute = route.path || '/weekly'
-if (viewRoute === '/') {
-  viewRoute = '/weekly'
-}
+const viewRoute = ref(route.path || '/weekly')
 
-console.log(route)
-console.log(viewRoute)
+// Update viewRoute when the route changes
+watch(
+  () => route.path,
+  (newPath) => {
+    viewRoute.value = newPath || '/weekly'
+  }
+)
 </script>
 
 <template>
@@ -23,7 +24,7 @@ console.log(viewRoute)
     <h1 class="font-bold text-3xl">💎 Daily Quests</h1>
     <!-- Navigation Links -->
     <nav class="mt-2 font-bold">
-      <router-link :class="{ underline: viewRoute === '/weekly' || viewRoute === '/weekly' }" to="/"
+      <router-link :class="{ underline: viewRoute === '/weekly' || viewRoute === '/' }" to="/"
         >Weekly</router-link
       >
       |
