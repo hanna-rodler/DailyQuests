@@ -33,6 +33,7 @@ onMounted(() => {
 
 function onSubmit(values: any) {
   let columnId = props.columnId
+  let origStatus = props.task?.status
   if (columnId === undefined) {
     columnId = values.doDate
   }
@@ -53,8 +54,11 @@ function onSubmit(values: any) {
       doDate: values.doDate,
       status: values.status
     }
-
-    kanbanStore.updateTask(columnId, updatedTask)
+    if (origStatus !== 'Done') {
+      kanbanStore.updateTask(columnId, updatedTask)
+    } else {
+      doneTasksStore.updateTask(updatedTask.taskId, updatedTask)
+    }
     // move Task if the doDate and the columnId (Date) are not the same anymore
     if (columnId !== updatedTask.doDate) {
       kanbanStore.moveTask(updatedTask.taskId, updatedTask.doDate)
@@ -62,6 +66,17 @@ function onSubmit(values: any) {
     if (updatedTask.status === 'Done') {
       doneTasksStore.handleDoneTask(updatedTask)
       kanbanStore.deleteTask(updatedTask.doDate, updatedTask.taskId)
+    }
+    if (origStatus === 'Done' && updatedTask.status !== 'Done') {
+      console.log('move back to other view')
+      kanbanStore.addTaskToColumn(columnId, {
+        name: values.name,
+        description: values.description,
+        dueDate: values.dueDate,
+        doDate: values.doDate,
+        status: values.status
+      })
+      doneTasksStore.deleteTask(updatedTask.taskId)
     }
   }
   emit('close-modal')

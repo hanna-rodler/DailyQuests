@@ -13,6 +13,7 @@ import Modal from './common/KanbanModal.vue'
 import TaskForm from './TaskForm.vue'
 import { ref } from 'vue'
 import kanbanStore from '@/stores/kanbanStore'
+import doneTasksStore from '@/stores/doneTasksStore'
 import DropZone from './common/KanbanDropZone.vue'
 import Draggable from './common/KanbanDraggable.vue'
 
@@ -48,7 +49,11 @@ function toggleDeleteTaskModal() {
 }
 
 function deleteTask() {
-  kanbanStore.deleteTask(props.columnId, props.task.taskId)
+  if (props.isDoneTask) {
+    doneTasksStore.deleteTask(props.task.taskId)
+  } else {
+    kanbanStore.deleteTask(props.columnId, props.task.taskId)
+  }
   toggleDeleteTaskModal()
 }
 

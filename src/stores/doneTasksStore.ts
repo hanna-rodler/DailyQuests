@@ -15,6 +15,15 @@ export function handleDoneTask(task: Task) {
   }
 }
 
+export function deleteTask(taskId: Task['taskId']) {
+  const task = DONE_STORE.value.find((task) => task.taskId === taskId)
+  console.log(task)
+
+  if (!task) return
+
+  DONE_STORE.value = DONE_STORE.value.filter((item) => item.task.taskId !== task.taskId)
+}
+
 export function getSortedDoneTasks(type: string) {
   if (type === 'dueDate') {
     DONE_STORE.value.sort(
@@ -27,7 +36,18 @@ export function getSortedDoneTasks(type: string) {
   }
 }
 
+export function updateTask(taskId: Task['taskId'], updatedTask: Task) {
+  const task = DONE_STORE.value.find((task) => task.taskId === taskId)
+
+  if (!task) return
+
+  task.task = updatedTask
+  console.log(task.task, 'updated')
+}
+
 export default {
   DONE_STORE,
-  handleDoneTask
+  handleDoneTask,
+  deleteTask,
+  updateTask
 }
