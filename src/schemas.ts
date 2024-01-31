@@ -1,13 +1,5 @@
 import { z } from 'zod'
-
-function compareDateOnly(date1: Date, date2: Date) {
-  const getDatePart = (date: Date) => new Date(date.toDateString())
-
-  const datePart1 = getDatePart(date1)
-  const datePart2 = getDatePart(date2)
-
-  return datePart1.getTime() >= datePart2.getTime()
-}
+import { compareDateOnly } from '@/utils/utils'
 
 export const taskFormSchema = z.object({
   name: z.string().min(1, 'Name is required').default(''),
@@ -16,7 +8,7 @@ export const taskFormSchema = z.object({
     (val) => {
       const date = new Date(val)
       const today = new Date()
-      return !isNaN(date.getTime()) && compareDateOnly(date, today)
+      return !isNaN(date.getTime()) && compareDateOnly(date, today, 'isGreaterOrEqual')
     },
     { message: 'Date cannot be in the past' }
   ),
@@ -24,7 +16,7 @@ export const taskFormSchema = z.object({
     (val) => {
       const date = new Date(val)
       const today = new Date()
-      return !isNaN(date.getTime()) && compareDateOnly(date, today)
+      return !isNaN(date.getTime()) && compareDateOnly(date, today, 'isGreaterOrEqual')
     },
     { message: 'Date cannot be in the past' }
   ),

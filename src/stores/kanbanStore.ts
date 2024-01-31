@@ -32,7 +32,7 @@ export const STORE = useLocalStorage<Column[]>(KEY, [])
 
 export function handlePastColumnsAndTasks() {
   for (const column of STORE.value) {
-    if (compareDateOnly(new Date(column.columnId), new Date(), false)) {
+    if (compareDateOnly(new Date(column.columnId), new Date(), 'isSmaller')) {
       for (const columnTask of column.tasks) {
         const currentDayColumnId = generateDateStringIdFromDate(new Date())
 
