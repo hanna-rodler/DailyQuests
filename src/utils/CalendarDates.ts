@@ -1,6 +1,6 @@
-import kanbanStore from '@/stores/kanbanStore'
-import type { DateStringArray } from '@/types'
-import { generateDateStringIdFromDate } from '@/utils/utils'
+import kanbanStore from '../stores/kanbanStore'
+import type { DateStringArray } from '../types'
+import { generateDateStringIdFromDate } from '../utils/utils'
 
 export function getCalendarForCurrentWeek(): DateStringArray {
   const today = new Date()
