@@ -91,7 +91,7 @@ Solution C): make a ColumnTaskForm and make a GeneralTaskForm. DoDate is present
     ref="taskForm"
     :validation-schema="validationSchema"
     @submit="onSubmit"
-    class="flex flex-col gap-2"
+    class="task-form"
   >
     <label for="name">Name</label>
     <Field id="name" type="text" name="name" class="p-2 border-2 rounded-sm border-gray-300" />
@@ -127,3 +127,51 @@ Solution C): make a ColumnTaskForm and make a GeneralTaskForm. DoDate is present
     <button type="submit" class="mt-3">Submit</button>
   </Form>
 </template>
+
+
+
+<style scoped>
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Styles for form elements */
+.task-form label, .task-form Field, .task-form ErrorMessage {
+  width: 100%; /* Ensure full width */
+}
+
+.task-form Field, .task-form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.task-form button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .task-form {
+    padding: 0.5rem; /* Adjust padding for mobile devices */
+  }
+
+  .task-form Field, .task-form select, .task-form button {
+    font-size: 0.875rem; /* Adjust font size for easier readability */
+  }
+
+  /* Additional mobile-specific styles can be added here */
+}
+
+/* Error message styling */
+.text-red-700 {
+  color: #dc2626;
+}
+</style>

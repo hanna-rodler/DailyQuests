@@ -35,4 +35,19 @@ onMounted(() => {
 #app {
   @apply select-none h-screen bg-gray-500;
 }
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-nav-link {
+    padding: 10px;
+    margin: 5px 0;
+    display: block;
+    text-align: center;
+  }
+}
 </style>
