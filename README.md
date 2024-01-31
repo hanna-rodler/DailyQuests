@@ -6,6 +6,14 @@ Tasks can be moved between the columns and the doDate is automatically updated. 
 
 The initial Kanban Board was created with the tutorial https://www.youtube.com/watch?v=Z5Bo4FIMSO4
 
+## Team Members
+
+Rodler Hanna, Gomaa Rawan
+
+## URL to live application
+
+https://daily-quests.vercel.app/#/
+
 ## Project Setup
 
 First, clone the repository and install dependencies:
