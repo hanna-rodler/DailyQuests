@@ -30,6 +30,9 @@ async function fetchPublicHolidays(countryCode: string, year: number) {
 
 export const STORE = useLocalStorage<Column[]>(KEY, [])
 
+/**
+ * Moves columns to the today date column when their doDate is in the past.
+ */
 export function handlePastColumnsAndTasks() {
   for (const column of STORE.value) {
     if (compareDateOnly(new Date(column.columnId), new Date(), 'isSmaller')) {
@@ -43,6 +46,11 @@ export function handlePastColumnsAndTasks() {
   }
 }
 
+/**
+ * Adds a column to the kanban board
+ * @param name name of column
+ * @param columnDateId
+ */
 export function addColumn(name: Column['name'], columnDateId: string) {
   // Check if columnId already exists
   const columnExists = STORE.value.some((column) => column.columnId === columnDateId)
@@ -56,18 +64,15 @@ export function addColumn(name: Column['name'], columnDateId: string) {
   }
 }
 
-export function updateColumn(payload: Pick<Column, 'name' | 'columnId'>) {
-  const column = STORE.value.find((column) => column.columnId === payload.columnId)
-
-  if (!column) return
-
-  column.name = payload.name
-}
-
 export function deleteColumn(columnId: Column['columnId']) {
   STORE.value = STORE.value.filter((column) => column.columnId !== columnId)
 }
 
+/**
+ * Adds a task to the column
+ * @param columnId
+ * @param payload
+ */
 export function addTaskToColumn(
   columnId: Column['columnId'],
   payload: Pick<Task, 'name' | 'description' | 'dueDate' | 'doDate' | 'status'>
@@ -92,6 +97,11 @@ export function addTaskToColumn(
   })
 }
 
+/**
+ * Updates the task when the user edited it.
+ * @param columnId
+ * @param task
+ */
 export function updateTask(columnId: Column['columnId'], task: Task) {
   const column = STORE.value.find((column) => column.columnId === columnId)
 
@@ -117,6 +127,12 @@ export function deleteTask(columnId: Column['columnId'], taskId: Task['taskId'])
   column.tasks = column.tasks.filter((task) => task.taskId !== taskId)
 }
 
+/**
+ * Moves task from one column to the other upon user dragging
+ * @param taskId
+ * @param targetColumnId
+ * @param targetTaskId
+ */
 export function moveTask(
   taskId: Task['taskId'],
   targetColumnId: Column['columnId'],
@@ -125,7 +141,7 @@ export function moveTask(
   let currentTask!: Task
   let currentTaskIndex!: number
 
-  // TODO: warn user if task is being moved to a doDate after the dueDate.
+  // possible further improvement: warn user if task is being moved to a doDate after the dueDate.
 
   const column = STORE.value.find((column) =>
     column.tasks.find((task, index) => {
@@ -160,7 +176,6 @@ export default {
   STORE,
   addColumn,
   handlePastColumnsAndTasks,
-  updateColumn,
   deleteColumn,
   addTaskToColumn,
   updateTask,

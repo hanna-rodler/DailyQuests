@@ -4,6 +4,10 @@ const KEY = 'DONE-TASKS-STORE'
 
 export const DONE_STORE = useLocalStorage<DoneTasks[]>(KEY, [])
 
+/**
+ * Pushes a task to the DONE STORE if it doesn't exist there yet
+ * @param task
+ */
 export function handleDoneTask(task: Task) {
   const taskExists = DONE_STORE.value.some((doneTask) => doneTask.taskId === task.taskId)
 
@@ -15,6 +19,10 @@ export function handleDoneTask(task: Task) {
   }
 }
 
+/**
+ * Deletes a task.
+ * @param taskId
+ */
 export function deleteTask(taskId: Task['taskId']) {
   const task = DONE_STORE.value.find((task) => task.taskId === taskId)
 
@@ -23,7 +31,11 @@ export function deleteTask(taskId: Task['taskId']) {
   DONE_STORE.value = DONE_STORE.value.filter((item) => item.task.taskId !== task.taskId)
 }
 
-export function getSortedDoneTasks(type: string) {
+/**
+ * sorts tasks by due date or do date
+ * @param type
+ */
+export function getSortedDoneTasks(type: 'dueDate' | 'doDate') {
   if (type === 'dueDate') {
     DONE_STORE.value.sort(
       (a, b) => new Date(a.task.dueDate).getTime() - new Date(b.task.dueDate).getTime()
@@ -35,6 +47,11 @@ export function getSortedDoneTasks(type: string) {
   }
 }
 
+/**
+ * Updates the task in the store when the user edited it.
+ * @param taskId
+ * @param updatedTask
+ */
 export function updateTask(taskId: Task['taskId'], updatedTask: Task) {
   const task = DONE_STORE.value.find((task) => task.taskId === taskId)
 

@@ -3,7 +3,7 @@ import kanbanStore from '@/stores/kanbanStore'
 export function generateDateStringIdFromDate(date: Date): string {
   const isoStringDate = new Date(date.toISOString().split('T')[0])
   // timezone difference causes day change
-  if (compareDateOnly(date, isoStringDate, 'isGreate')) {
+  if (compareDateOnly(date, isoStringDate, 'isGreater')) {
     const tomorrow = new Date(date)
     tomorrow.setDate(date.getDate() + 1)
     date = tomorrow
@@ -11,7 +11,17 @@ export function generateDateStringIdFromDate(date: Date): string {
   return date.toISOString().split('T')[0]
 }
 
-export function compareDateOnly(date1: Date, date2: Date, type: string) {
+/**
+ *
+ * @param date1 smaller date
+ * @param date2 higher date
+ * @param type
+ */
+export function compareDateOnly(
+  date1: Date,
+  date2: Date,
+  type: 'isGreaterOrEqual' | 'isSmaller' | 'isGreater'
+) {
   const getDatePart = (date: Date) => new Date(date.toDateString())
 
   const datePart1 = getDatePart(date1)
@@ -26,6 +36,9 @@ export function compareDateOnly(date1: Date, date2: Date, type: string) {
   }
 }
 
+/**
+ * Creates a calendar for the next whole year. So if today is January 31 2024, the calendar until January 31 2025 is created.
+ */
 export function createCalendarForOneYear(): void {
   const today = new Date()
   const currentYear = today.getFullYear()
@@ -68,6 +81,10 @@ export function createCalendarForOneYear(): void {
   localStorage.setItem('calendarCreated', new Date().toISOString().split('T')[0])
 }
 
+/**
+ * Adds dummy tasks for show purposes
+ * Delay for 1 second before calling handlePastColumnsAndTasks. could be handled nicer with async await, etc. but this is only for the dummy data.
+ */
 export function createDummyTasks() {
   const isDummyTasksLoaded: string | null = localStorage.getItem('dummyTasksLoaded')
   if (isDummyTasksLoaded === null || isDummyTasksLoaded === 'false') {
@@ -96,8 +113,6 @@ export function createDummyTasks() {
       status: 'In Progress'
     })
 
-    // Delay for 1 second before calling handlePastColumnsAndTasks
-    // could be handled nicer with async await, etc. but this is only for the dummy data.
     setTimeout(() => {
       kanbanStore.handlePastColumnsAndTasks()
     }, 1000)
