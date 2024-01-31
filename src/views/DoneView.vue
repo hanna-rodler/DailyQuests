@@ -3,8 +3,6 @@ import Task from '@/components/Task.vue'
 
 import { DONE_STORE, getSortedDoneTasks } from '@/stores/doneTasksStore'
 
-import { createCalendarColumns } from '@/utils/CalendarDates'
-
 getSortedDoneTasks('doDate')
 </script>
 
