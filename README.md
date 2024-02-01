@@ -62,36 +62,6 @@ const holidays = await fetchPublicHolidays(countryCode, year)
 
 This function can be integrated into Vuex actions to manage the application's state related to public holidays.
 
-## Automated Testing
-
-Automated tests are written using Jest and Vue Test Utils.
-
-### Running Tests
-
-To run all tests:
-
-```bash
-npm run test
-```
-
-### Writing Tests
-
-Tests are located in the `tests` directory. They are structured to mirror the `src` directory, with unit tests for components and Vuex store modules.
-
-#### Example Test
-
-```javascript
-// Example test in Task.spec.js
-import { shallowMount } from '@vue/test-utils'
-import Task from '@/components/Task.vue'
-
-describe('Task.vue', () => {
-  it('renders task content', () => {
-    // Test implementation
-  })
-})
-```
-
 ## Conclusion
 
-DailyQuests provides a user-friendly interface to manage tasks and view public holidays. The project is designed to be scalable and maintainable, with a focus on clean code and robust testing.
+DailyQuests provides a user-friendly interface to manage tasks and view public holidays. The project is designed to be scalable and maintainable, with a focus on clean code. Unfortunately, there are no automated tests.
