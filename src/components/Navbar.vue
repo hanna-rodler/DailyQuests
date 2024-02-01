@@ -24,13 +24,15 @@ watch(
     <h1 class="font-bold text-3xl">💎 Daily Quests</h1>
     <!-- Navigation Links -->
     <nav class="mt-2 font-bold">
-      <router-link :class="{ underline: viewRoute === '/weekly' || viewRoute === '/weekly' }" to="/"
+      <router-link :class="{ underline: viewRoute === '/weekly' || viewRoute === '/' }" to="/"
         >Weekly</router-link
       >
       |
-      <router-link :class="{ active: viewRoute === '/monthly' }" to="/monthly">Monthly</router-link>
+      <router-link :class="{ underline: viewRoute === '/monthly' }" to="/monthly"
+        >Monthly</router-link
+      >
       |
-      <router-link :class="{ active: viewRoute === '/done' }" to="/done">Done Tasks</router-link>
+      <router-link :class="{ underline: viewRoute === '/done' }" to="/done">Done Tasks</router-link>
     </nav>
     <button class="font-bold add-task-button" @click="isTaskModalActive = !isTaskModalActive">
       Add Task
